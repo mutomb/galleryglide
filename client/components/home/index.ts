@@ -1,0 +1,5 @@
+export {default as Home} from './Home'
+export { default as HomeHero } from './hero'
+export { default as HomePopularGallery } from './popular-gallery'
+export { default as HomeSearchedGallery } from './searched-gallery'
+export { default as Search } from './Search'

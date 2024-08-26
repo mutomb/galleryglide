@@ -1,0 +1,15 @@
+{
+    "presets": [
+      ["@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "react-refresh/babel"  //Comment during test mode
+    ]
+}
