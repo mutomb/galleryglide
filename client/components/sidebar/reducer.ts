@@ -1,8 +1,9 @@
-export const initialState = { open: false, topics: [], topic: {} }
+export const initialState = { open: false, topics: [], topic: {}, photos: [] }
 export const actionTypes = {
 SET_OPEN: "SET_OPEN",
 SET_TOPICS: "SET_TOPICS",
 SET_TOPIC: "SET_TOPIC",
+SET_PHOTOS: "SET_PHOTOS",
 }
 const reducer = (state, action) => {
     switch(action.type) {
@@ -20,6 +21,11 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 topic: action.topic
+            }
+        case actionTypes.SET_PHOTOS:
+            return {
+                ...state,
+                photos: action.photos
             }
         default:
             return state

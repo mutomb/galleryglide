@@ -38,9 +38,7 @@ const GalleryCardItem: FC<Props> = ({ photo, action, wrapperStyle }) => {
           <Box
             sx={{lineHeight: 0, overflow: 'hidden', borderTopRightRadius: 10, borderBottomRightRadius: 10, height: 200, width: '100%', mb: 0.5, 
             }}>
-            {/* <Link style={{textDecoration: 'none', width:'100%', height:'100%'}} to={enrollmentID? "/client/"+ enrollmentID : "/gallery/"+photo._id}> */}
             <Box component='img' src={photo.urls.small}  sx={{width:'100%', height:'100%'}} />
-            {/* </Link> */}
           </Box>
           <Box sx={{ mb: 2 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Box, IconButton, useMediaQuery} from '@mui/material'
+import {Box, IconButton, Typography, useMediaQuery} from '@mui/material'
 import Slider, { Settings } from 'react-slick'
 import { useTheme } from '@mui/material/styles'
 import {SliderArrow} from '../styled-buttons'
@@ -9,10 +9,10 @@ import { CardItemSkeleton } from '../skeletons'
 import { useSideBar } from '../sidebar/SideBarProvider';
 import { listPhotosByTopic } from './gallery-api'
 import GalleryCardItem from './gallery-card-item'
+import { actionTypes } from '../sidebar'
 
 const HomePopularGallery = () => {
-  const [{ open, topic }, dispatch] = useSideBar()
-  const [photos, setPhotos] = useState([])
+  const [{ open, topic, photos }, dispatch] = useSideBar()
   const theme = useTheme()
   const xsMobileView = useMediaQuery(theme.breakpoints.down('sm'))
   const smMobileView = useMediaQuery(theme.breakpoints.down('md'))
@@ -48,10 +48,28 @@ const HomePopularGallery = () => {
          setError(data.error)
          setLoading(false)
       } else {
-        setPhotos(data)
+        dispatch({type: actionTypes.SET_PHOTOS, photos: data})
         setLoading(false)
       }
     })
+    return function cleanup(){
+      abortController.abort()
+    }
+  }, [topic])
+  useEffect(() => {
+    const abortController = new AbortController()
+    const signal = abortController.signal
+    setLoading(true)
+    topic && topic.slug && listPhotosByTopic(signal, topic.slug).then((data) => {
+      if (data && data.error) {
+         setError(data.error)
+         setLoading(false)
+      } else {
+        dispatch({type: actionTypes.SET_PHOTOS, photos: data})
+        setLoading(false)
+      }
+    })
+    topic && topic.title && topic.title.includes('Searched:') && setLoading(false)
     return function cleanup(){
       abortController.abort()
     }
@@ -83,6 +101,9 @@ const HomePopularGallery = () => {
       </Box>)
   }
   return (<>
+          <Box sx={{width: '100%', py: 1, textAlign: 'center'}}> 
+            {topic && topic.title && <Typography sx={{ pb: 1, fontWeight: 500, fontSize: '1.2rem', color: 'text.primary'}}>Topic: {topic.title}</Typography>}
+          </Box>
           {(photos.length < 5) ? 
           (<Box sx={{['& .slick-list']: { ml: 0}, ['& .slick-slider']: { width: '100%'}, ['& .slick-slide> div > div > div']: {transform: 'scale(0.9)', transition: theme.transitions.create(['box-shadow', 'transform', 'filter'], {duration: 2000})}, ['& .slick-slide.slick-active.slick-current > div > div > div']: {filter: 'blur(0px)', boxShadow: 4, transform: 'scale(1.03)', transition: theme.transitions.create(['box-shadow', 'transform', 'filter'], {duration: 2000})}, width: '100%', display: 'flex', flexDirection: {xs: 'column', sm: 'row'}}}>
             <Slider {...sliderConfig}>

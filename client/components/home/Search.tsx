@@ -1,15 +1,14 @@
 import React, {ChangeEvent, useEffect, useState} from 'react'
-import {Divider, InputBase, Box, FormControl, inputBaseClasses, selectClasses, IconButton, useMediaQuery} from '@mui/material'
+import {InputBase, Box, FormControl, IconButton, useMediaQuery} from '@mui/material'
 import {Error, Search as SearchIcon} from '@mui/icons-material'
 import { useTheme } from '@mui/material/styles'
-// import {list} from './api-gallery'
-import { ClearAdornment, Pagination, SelectButton } from '../styled-buttons'
+import { ClearAdornment } from '../styled-buttons'
 import { StyledSnackbar } from '../styled-banners'
-import { WallPaperYGW } from '../wallpapers/wallpapers'
+import { searchPhotos } from './gallery-api'
+import { actionTypes, useSideBar } from '../sidebar'
 
 export default function Search() {
-  const { transitions, breakpoints, palette } = useTheme()
-  const matchMobileView = useMediaQuery(breakpoints.down('md'), {defaultMatches: true})
+  const { breakpoints } = useTheme()
   const [values, setValues] = useState({
       category: '',
       search: '',
@@ -17,7 +16,7 @@ export default function Search() {
       searched: false,
       error: ''
   })
-  const [enrollments, setEnrollments] = useState([])
+  const [{}, dispatch] = useSideBar()
  
   const handleChange = (name: string) => (event) => {
     setValues({
@@ -29,21 +28,19 @@ export default function Search() {
     setValues({...values, search: ''})
   }
 
-  const handlePageChange = (event: ChangeEvent<unknown>, page: number) => {
-    search(page)
-  }
   
   const search = (page?: number) => {
     const abortController = new AbortController()
     const signal = abortController.signal
     if(values.search){
-      // list({search: values.search, category: values.category, page}, signal).then((data) => {
-      //   if (data && data.error) {
-      //     setValues({...values, error: data.error})
-      //   } else {
-      //     setValues({...values, results: data, searched:true})
-      //   }
-      // })
+      searchPhotos(signal, values.search, page, 20).then((data) => {
+        if (data && data.error) {
+          setValues({...values, error: data.error})
+        } else {
+          dispatch({type: actionTypes.SET_TOPIC, topic: {title: `Searched: ${values.search}`}})
+          dispatch({type: actionTypes.SET_PHOTOS, photos: data.results})
+        }
+      })
     }
   }
   const enterKey = (event) => {
@@ -57,7 +54,6 @@ export default function Search() {
   }
   useEffect(() => {
     const abortController = new AbortController()
-    const signal = abortController.signal
     return function cleanup(){
         abortController.abort()
     }
@@ -90,21 +86,7 @@ export default function Search() {
               <SearchIcon  sx={{ ':hover':{color: 'primary.main'}}}/>
             </IconButton>
           </Box>
-        </Box>
-        <WallPaperYGW id='search-results' variant='linear' primaryColor={palette.background.paper} secondaryColor={palette.background.default}
-          style={{
-            '& > div':{
-              position: 'relative'
-            }
-          }}>
-          {/* {values.results && values.results.gallery &&  enrollments && 
-          (<Gallery gallery={values.results.gallery} searched={values.searched} enrollments={enrollments}/>)
-          } */}
-          {/* {values.results && values.results.count && values.results.page && 
-          (<Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4}}>
-            <Pagination size={matchMobileView? 'small': 'medium'} shape='circular' variant='outlined' onChange={handlePageChange} page={Number(values.results.page)} count={Number(values.results.count)} siblingCount={1}/>
-          </Box>)} */}
-        </WallPaperYGW>  
+        </Box> 
         <StyledSnackbar
         open={values.error? true: false}
         duration={3000}

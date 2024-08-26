@@ -1,6 +1,8 @@
 # Gallery Glider
 
 A simple photo gallery application that allows you to scroll and search photos from Unsplash. It is developed using the latest versions of **React.js**(React Hooks, Redux/Context API). The UI is built on top of **MaterialUI 5**, which is simple & light designed to provide all the basic components using the `sx` prop for a developer need to create slick page views.
+#### Screenshots
+![alt text](dark.png)
 
 <br/><br/>
 
