@@ -14,6 +14,7 @@ const config = {
     output: {
         path: path.join(CURRENT_WORKING_DIR ,'dist','js'),
         filename: 'bundle.js',
+        publicPath: '/'
     },
     devServer: { 
         static: path.join(CURRENT_WORKING_DIR ,'dist'),
