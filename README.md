@@ -4,7 +4,7 @@ A simple photo gallery application that allows you to scroll and search photos f
 
 <br/><br/>
 
-### [Check out the Live Demo](https://galleryglide.onrender.com "GalleryGlide") 
+### [Check out the Live Demo](https://galleryglide.onrender.com "GalleryGlide") (N.B. The site will take about 50s to spin up the server and load the initial page.)
 
 #### Screenshots
 | Dark    | Light |
