@@ -1,8 +1,7 @@
 import React, { FC, useState } from 'react'
 import { Logo } from '../logo'
-import { Menu, Close } from '@mui/icons-material'
 import { ColorModeButton } from '../styled-buttons'
-import { Link as MuiLink, AppBar, Toolbar, Box, Slide, Container, IconButton,useMediaQuery, useScrollTrigger, boxClasses, ListSubheader, buttonBaseClasses, typographyClasses, ListItemButton, ListItem, ListItemText} from '@mui/material'
+import { Link as MuiLink, AppBar, Toolbar, Box, Slide, Container, useMediaQuery, useScrollTrigger, ListSubheader, buttonBaseClasses, typographyClasses, ListItemButton, ListItemText} from '@mui/material'
 import { useTheme} from '@mui/material/styles'
 import { SideBar } from '../sidebar'
 import { actionTypes } from '../sidebar/reducer'
@@ -50,7 +49,7 @@ const Header: FC = () => {
       {xsMobileView &&
       (<>
       </>)}
-      {topics.map((topic)=>(
+      {topics && topics.map((topic)=>(
         <MuiLink
             key={topic.id}
             component='span'
